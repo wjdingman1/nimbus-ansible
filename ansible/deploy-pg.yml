@@ -8,7 +8,7 @@
   tasks:
     - name: Update repositories cache and install "pip" packages
       apt:
-        name: "{{item}}"
+        name: "{{ item }}"
         update_cache: yes
       loop:
         - python3-pip
@@ -23,6 +23,7 @@
 - name: Deploy services
   hosts: all
   gather_facts: false
+  become: yes
   tags:
     - deploy
   tasks:
@@ -31,11 +32,17 @@
         path: "{{ nimbus_dir }}"
         state: directory
         mode: 0755
+    
+    - name: make nimbus data dir
+      file: 
+        path : "{{ nimbus_data_dir }}"
+        state: directory
+        mode: 0755
 
     - name: copy
       template:
-        src: "templates/{{item}}"
-        dest: "{{ nimbus_dir}}"
+        src: "templates/{{ item }}"
+        dest: "{{ nimbus_dir }}"
       loop:
         - .env
         - docker-compose.yml
@@ -49,18 +56,19 @@
       register: output
 
 - name: Set backup on machines
-  hosts: mediforservers
+  hosts: all
   gather_facts: false
+  become: yes
   tags:
     - backup
   tasks:
     - name: Create backup folder if it does not exist
       file:
-        path: "{{medifor_backup_data_dir}}"
+        path: "{{ medifor_backup_data_dir }}"
         state: directory
-        #mode: '0755'
+        mode: 0755
     - name: Setup cron job
       template:
         src: "templates/nimbus_backup.sh"
         dest: "/etc/cron.daily/mediforBackup"
-        mode: "0751"
+        mode: 0751

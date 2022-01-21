@@ -1,4 +1,3 @@
----
 nimbus_dir: /opt/nimbus
 nimbus_data_dir: /nimbus
 nimbus_backup_data_dir: /nimbus_backup

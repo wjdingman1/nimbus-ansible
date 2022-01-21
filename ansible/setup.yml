@@ -1,6 +1,7 @@
 ---
 - name: System Update
   hosts: all
+  become: yes
   tags:
     - system
   tasks:
@@ -16,12 +17,11 @@
 
 - name: Docker Configuration
   hosts: all
+  become: yes
   tags:
     - docker
   roles:
     - geerlingguy.docker
-    - nvidia.nvidia_driver
-    - nvidia.nvidia_docker
   post_tasks:
     - name: Docker-compose bash autocomplete
       get_url:

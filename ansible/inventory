@@ -1,1 +1,9 @@
-main        ansible_host=34.85.243.24 ansible_user=wes
+
+[nimbus:children]
+dev
+prod
+
+[dev]
+main        ansible_host=34.201.136.202 ansible_user=ubuntu
+
+[prod]
