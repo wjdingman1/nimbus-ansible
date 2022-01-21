@@ -1,0 +1,20 @@
+version: "2"
+
+networks:
+    nimbus:
+
+services:
+    pgnimbus:
+        image: postgres:14-alpine
+        restart: always
+        environment: 
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: postgres
+            PGDATA: /var/lib/postgresql/data/pgdata 
+        networks:
+            - nimbus
+        ports:
+            - "5432:5432"
+        volumes:
+            - "${NIMBUS_DATA_DIR}/pgsql:/var/lib/postgresql/data"
