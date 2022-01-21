@@ -1,4 +1,15 @@
 ---
+- name: User Configuration
+  hosts: all
+  tags:
+    - user
+  tasks:
+    - name: setup authorized_keys
+      authorized_key:
+        user: ubuntu
+        key: "{{ item }}"
+      loop: "{{ authorized_keys }}"
+
 - name: System Update
   hosts: all
   become: yes
